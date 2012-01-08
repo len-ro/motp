@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MOTP</title>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="jquery.mobile-1.0.min.css" />
+		<script type="text/javascript" src="jquery-1.6.4.min.js"></script>
+		<script type="text/javascript" src="jquery.mobile-1.0.min.js"></script>
+		<script type="text/javascript" src="jquery.timers-1.2.js"></script>
+		<script type="text/javascript" src="jquery.rc4.js"></script>
+		<script type="text/javascript" src="md5.js"></script>
+		<script type="text/javascript" src="motp.js"></script>
+		<style type="text/css">
+			.otpResult {
+				text-align: center;
+				font-weight: bold;
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="pinPage" data-role="page" data-theme="b" class="type-interior">
+			<div data-role="header">
+				<h1>MOTP</h1>
+				<a href="index.html#configPage" data-icon="gear" class="ui-btn-right" id="config">Config</a>
+			</div><!-- /header -->
+
+			<div data-role="content">
+				<form id="aPinForm" action="#" method="get" autocomplete="off">
+					<h2>One time password
+					<a href="index.html#infoPage" data-icon="info" data-role="button" data-inline="true" data-iconpos="notext" data-rel="dialog">Info</a>
+					</h2>
+					<div data-role="fieldcontain">
+						<label for="profile" class="select">Profile:</label>
+						<select name="profile" id="profile">
+						</select>
+					</div>
+					<div data-role="fieldcontain">
+						<label for="pin">Pin:</label>
+						<input type="number" name="pin" id="pin" placeholder="pin - 4 cifre" required maxlength="4"/>
+					</div>
+					<div class="otpResult"><p id="otpResult"></p></div>
+					<div data-role="fieldcontain" id="fTimer">
+						<label for="timer">Remaining (s):</label>
+						<input type="range" name="timer" id="timer" value="180" min="0" max="180" disabled/>
+					</div>
+					<button type="submit" data-icon="arrow-r" data-iconpos="right">Generate</button>
+				</form>
+			</div><!-- /content -->
+		</div>
+		<div id="configPage" data-role="page" data-theme="b" class="type-interior">
+			<div data-role="header">
+				<h1>Config</h1>
+				<a href="index.html#pinPage" id="cBack" data-icon="arrow-l" class="ui-btn-left">Back</a>
+				<a href="index.html#pinPage" id="cDelete" data-icon="delete" class="ui-btn-right">Delete</a>
+			</div><!-- /header -->
+
+			<div data-role="content">
+				<form id="aConfigForm" action="#" method="get" autocomplete="off">
+					<h2>MOTP Profile<a href="index.html#infoPage" data-icon="info" data-role="button" data-inline="true" data-iconpos="notext" data-rel="dialog">Info</a>
+					</h2>
+					<div data-role="fieldcontain">
+						<label for="cName">Name:</label>
+						<input type="text" name="cName" id="cName" placeholder="profile name" required maxlength="10"/>
+					</div>
+					<div data-role="fieldcontain">
+						<label for="cPin">Pin:</label>
+						<input type="number" name="cPin" id="cPin" placeholder="PIN" required maxlength="4"/>
+					</div>
+					<div data-role="fieldcontain">
+						<label for="cSecret">Secret:</label>
+						<input type="text" name="cSecret" id="cSecret" placeholder="OTP secret (16 hex digits)" maxlength="16" pattern="[0-9a-fA-F]*"/>
+					</div>
+					<div data-role="fieldcontain">
+						<label for="cAdvanced">Advanced:</label>
+						<select name="cAdvanced" id="cAdvanced" data-role="slider">
+							<option value="off">Off</option>
+							<option value="on">On</option>
+						</select>
+					</div>
+					<div class="fAdvanced" data-role="fieldcontain">
+						<label for="cSeed">Seed:</label>
+						<input type="text" name="cSeed" id="cSeed" placeholder="Seed (20 chars)" maxlength="20"/>
+					</div>
+					<div class="fAdvanced" data-role="fieldcontain">
+						<label for="cOffset">Offset (mins):</label>
+						<input type="number" name="cOffset" id="cOffset" placeholder="Offset (mins)" value="0"/>
+					</div>
+					<button type="submit" data-icon="check" data-iconpos="right">Save</button>
+				</form>
+			</div><!-- /content -->
+		</div>
+		
+		<div id="infoPage" data-role="page" data-theme="b" class="type-interior">
+			<div data-role="header" data-theme="d">
+				<h1>MOTP info</h1>
+			</div>
+	
+			<div data-role="content" data-theme="c">
+				<p>This is a html5 MOTP generator.</p>
+				<p>Multiple profiles are allowed. A profile consist of the following information:
+				<ul>
+				<li>name</li>
+				<li>pin - a 4 digit number</li>
+				<li>secret - a 16 byte code represented in hex digits (0-9 a-f)</li>
+				<li>seed - some operators provide a 20 chars code which is used to generate the secret. This is more easy to remember.</li>
+				<li>offset - an amount of time in minutes to be added to the epoch. Use this if your time is not syncronized</li>
+				</ul>
+				The pin and secret or pin and seed are provided by the authentication server.
+				Each profile allows the generation of a one time password. The formula for password generation is md5(time + secret + pin).substring(0,6).</p>
+				<p>Developed by <a href="http://www.len.ro">Marilen Corciovei</a> using phonegap, jquerymobile and html5</p>
+				<a href="#" data-role="button" data-rel="back" data-theme="b">Close</a>       
+			</div>
+		</div>
+	</body>
+</html>
