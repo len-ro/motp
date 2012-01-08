@@ -1,0 +1,1 @@
+This is a HTML5 motp implementation suporting multiple profiles, seed to secret generation, minutes offset. It's implemented using html5, phonegap, jquerymobile and distributed under apache 2 license.
